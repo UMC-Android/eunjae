@@ -1,27 +1,14 @@
-package com.example.Myy
+package com.example.myy
 
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.Myy.ui.theme.Workbook7Theme
-import kotlinx.android.synthetic.main.activity_main.buttonPause
-import kotlinx.android.synthetic.main.activity_main.buttonStart
-import kotlinx.android.synthetic.main.activity_main.buttonStop
-import kotlinx.android.synthetic.main.activity_main.textTimer
-import kotlin.concurrent.thread
+import com.example.myy.databinding.ActivityMainBinding
 
 class MainActivity : ComponentActivity() {
-
+    private lateinit var binding: ActivityMainBinding
 
     private var started = false
     private var totalSeconds = 0
@@ -32,14 +19,14 @@ class MainActivity : ComponentActivity() {
         override fun handleMessage(msg: Message) {
             when (msg.what) {
                 SET_TIME -> {
-                    textTimer.text = formatTime(msg.arg1)
+                    binding.textTimer.text = formatTime(msg.arg1)
                     if (msg.arg1 >= 30) {
                         stop()
                     }
                 }
 
                 RESET -> {
-                    textTimer.text = "00:00"
+                    binding.textTimer.text = "00:00"
                 }
             }
         }
@@ -47,11 +34,12 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        buttonStart.setOnClickListener { start() }
-        buttonPause.setOnClickListener { pause() }
-        buttonStop.setOnClickListener { stop() }
+        binding.buttonStart.setOnClickListener { start() }
+        binding.buttonPause.setOnClickListener { pause() }
+        binding.buttonStop.setOnClickListener { stop() }
     }
 
     private fun start() {
